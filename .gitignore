@@ -1,0 +1,15 @@
+# Data files
+accounts.txt
+
+# Build Artifacts
+*.o
+*.out
+*.exe
+atm_app
+bin/
+build/
+
+# IDE & OS files
+.DS_Store
+.vscode/
+.idea/
