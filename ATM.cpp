@@ -1,4 +1,7 @@
 #include "ATM.h"
+#include <ios>
+#include <iosfwd>
+#include <limits>
 
 ATM::ATM() { loadAccounts(); }
 
@@ -55,6 +58,13 @@ void ATM::login() {
   cout << "Enter Account Number: ";
   cin >> accountNumber;
 
+  if (cin.fail()) {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Invalid input! Account number must be numeric.\n";
+    return;
+  }
+
   int index = findAccount(accountNumber);
 
   if (index == -1) {
@@ -67,6 +77,14 @@ void ATM::login() {
   while (attempts < 3) {
     cout << "Enter PIN: ";
     cin >> enteredPin;
+
+    if (cin.fail()) {
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      attempts++;
+      cout << "Invalid input! Please enter a valid PIN.\n";
+      continue;
+    }
 
     if (accounts[index].verifyPIN(enteredPin)) {
       cout << "\nLogin successful!\n";
@@ -101,6 +119,13 @@ void ATM::performTransaction(Account &account) {
     showMenu();
     cin >> choice;
 
+    if (cin.fail()) {
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      cout << "\nInvalid choice. Please enter a number (1-5).\n";
+      continue;
+    }
+
     switch (choice) {
     case 1:
       account.checkBalance();
@@ -111,6 +136,13 @@ void ATM::performTransaction(Account &account) {
 
       cout << "Enter deposit amount: ";
       cin >> amount;
+
+      if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "\nInvalid amount entered!\n";
+        break;
+      }
 
       double oldBalance = account.getBalance();
 
@@ -129,6 +161,13 @@ void ATM::performTransaction(Account &account) {
 
       cout << "Enter withdrawal amount: ";
       cin >> amount;
+
+      if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "\nInvalid amount entered!\n";
+        break;
+      }
 
       double oldBalance = account.getBalance();
 
@@ -149,8 +188,21 @@ void ATM::performTransaction(Account &account) {
       cout << "Enter old PIN: ";
       cin >> oldPin;
 
+      if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "\nInvalid input for old PIN!\n";
+        break;
+      }
       cout << "Enter new PIN: ";
       cin >> newPin;
+
+      if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "\nInvalid input for new PIN!\n";
+        break;
+      }
 
       int previousPin = account.getPIN();
 
