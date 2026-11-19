@@ -1,14 +1,15 @@
 #include "Account.h"
+#include <iomanip>
 
 Account::Account() {
   accountNumber = 0;
   accountHolder = "";
   pin = 0;
-  balance = 0.0;
+  balance = 0;
 }
 
 Account::Account(long long accNo, string holder, int userPin,
-                 double initialBalance) {
+                 long long initialBalance) {
   accountNumber = accNo;
   accountHolder = holder;
   pin = userPin;
@@ -19,11 +20,12 @@ bool Account::verifyPIN(int enteredPin) { return pin == enteredPin; }
 
 void Account::checkBalance() {
   cout << "\n-----------------------------------\n";
-  cout << "Current Balance : Rs. " << balance << endl;
+  cout << "Current Balance : Rs. " << (balance / 100) << "." << setw(2)
+       << setfill('0') << (balance % 100) << endl;
   cout << "-----------------------------------\n";
 }
 
-void Account::deposit(double amount) {
+void Account::deposit(long long amount) {
   if (amount <= 0) {
     cout << "\nInvalid Deposit Amount!\n";
     return;
@@ -33,12 +35,14 @@ void Account::deposit(double amount) {
 
   cout << "\n-----------------------------------\n";
   cout << "Amount Deposited Successfully.\n";
-  cout << "Deposited Amount : Rs. " << amount << endl;
-  cout << "Available Balance : Rs. " << balance << endl;
+  cout << "Deposited Amount : Rs. " << (amount / 100) << "." << setw(2)
+       << setfill('0') << (amount % 100) << endl;
+  cout << "Available Balance : Rs. " << (balance / 100) << "." << setw(2)
+       << setfill('0') << (balance % 100) << endl;
   cout << "-----------------------------------\n";
 }
 
-void Account::withdraw(double amount) {
+void Account::withdraw(long long amount) {
   if (amount <= 0) {
     cout << "\nInvalid Withdrawal Amount!\n";
     return;
@@ -53,8 +57,10 @@ void Account::withdraw(double amount) {
 
   cout << "\n-----------------------------------\n";
   cout << "Withdrawal Successful.\n";
-  cout << "Withdrawn Amount : Rs. " << amount << endl;
-  cout << "Available Balance : Rs. " << balance << endl;
+  cout << "Withdrawn Amount : Rs. " << (amount / 100) << "." << setw(2)
+       << setfill('0') << (amount % 100) << endl;
+  cout << "Available Balance : Rs. " << (balance / 100) << "." << setw(2)
+       << setfill('0') << (balance % 100) << endl;
   cout << "-----------------------------------\n";
 }
 
@@ -80,8 +86,8 @@ string Account::getAccountHolder() { return accountHolder; }
 
 int Account::getPIN() { return pin; }
 
-double Account::getBalance() { return balance; }
+long long Account::getBalance() { return balance; }
 
 void Account::setPIN(int newPin) { pin = newPin; }
 
-void Account::setBalance(double newBalance) { balance = newBalance; }
+void Account::setBalance(long long newBalance) { balance = newBalance; }

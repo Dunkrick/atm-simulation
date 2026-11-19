@@ -6,6 +6,7 @@ accounts.txt
 *.out
 *.exe
 atm_app
+atm_test
 bin/
 build/
 

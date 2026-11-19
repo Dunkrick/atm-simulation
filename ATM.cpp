@@ -18,7 +18,7 @@ void ATM::loadAccounts() {
   long long accountNumber;
   string accountHolder;
   int pin;
-  double balance;
+  long long balance;
 
   while (fin >> accountNumber >> accountHolder >> pin >> balance) {
     Account account(accountNumber, accountHolder, pin, balance);
@@ -132,10 +132,10 @@ void ATM::performTransaction(Account &account) {
       break;
 
     case 2: {
-      double amount;
+      long long inputRupees;
 
       cout << "Enter deposit amount: ";
-      cin >> amount;
+      cin >> inputRupees;
 
       if (cin.fail()) {
         cin.clear();
@@ -144,9 +144,10 @@ void ATM::performTransaction(Account &account) {
         break;
       }
 
-      double oldBalance = account.getBalance();
+      long long amountInPaise = llround(inputRupees * 100.0);
+      long long oldBalance = account.getBalance();
 
-      account.deposit(amount);
+      account.deposit(amountInPaise);
 
       if (account.getBalance() != oldBalance) {
         saveAccounts();
@@ -157,10 +158,10 @@ void ATM::performTransaction(Account &account) {
     }
 
     case 3: {
-      double amount;
+      long long inputRupees;
 
       cout << "Enter withdrawal amount: ";
-      cin >> amount;
+      cin >> inputRupees;
 
       if (cin.fail()) {
         cin.clear();
@@ -169,9 +170,10 @@ void ATM::performTransaction(Account &account) {
         break;
       }
 
-      double oldBalance = account.getBalance();
+      long long amountInPaise = llround(inputRupees * 100.0);
+      long long oldBalance = account.getBalance();
 
-      account.withdraw(amount);
+      account.withdraw(amountInPaise);
 
       if (account.getBalance() != oldBalance) {
         saveAccounts();
