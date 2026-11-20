@@ -1,5 +1,6 @@
 # Data files
 accounts.txt
+accounts_temp.txt
 
 # Build Artifacts
 *.o

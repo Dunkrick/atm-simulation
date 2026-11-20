@@ -1,4 +1,5 @@
 #include "ATM.h"
+#include <cstdio>
 #include <ios>
 #include <iosfwd>
 #include <limits>
@@ -29,7 +30,15 @@ void ATM::loadAccounts() {
 }
 
 void ATM::saveAccounts() {
-  ofstream fout("accounts.txt");
+  const string tempFile = "accounts_temp.txt";
+  const string targetFile = "accounts.txt";
+
+  ofstream fout(tempFile);
+
+  if (!fout) {
+    cout << "Error: Unable to open temporary file for writing.\n";
+    return;
+  }
 
   for (Account &account : accounts) {
     fout << account.getAccountNumber() << " " << account.getAccountHolder()
@@ -37,6 +46,12 @@ void ATM::saveAccounts() {
   }
 
   fout.close();
+
+  std::remove(targetFile.c_str());
+
+  if (std::rename(tempFile.c_str(), targetFile.c_str()) != 0) {
+    cout << "Error: Failed to commit account changes to storage.\n";
+  }
 }
 
 int ATM::findAccount(long long accountNumber) {
@@ -88,7 +103,13 @@ void ATM::login() {
 
     if (accounts[index].verifyPIN(enteredPin)) {
       cout << "\nLogin successful!\n";
-      cout << "Welcome, " << accounts[index].getAccountHolder() << "!\n";
+
+      string displayName = accounts[index].getAccountHolder();
+      for (char &c : displayName) {
+        if (c == '_')
+          c = ' ';
+      }
+      cout << "Welcome, " << displayName << "!\n";
 
       performTransaction(accounts[index]);
       return;
